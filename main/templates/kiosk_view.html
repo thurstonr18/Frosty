@@ -1,0 +1,414 @@
+
+<html>
+    
+
+<head>
+    
+    <!-- Compiled and minified CSS -->
+    {% load static %}
+    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+
+<style>
+body{
+  width: 720;
+  height: 480;
+  background-color: #2b3d41;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-family: 'Didact Gothic';
+} 
+
+.card-panel{
+  border-radius:3px;
+  background-color: #48639c;
+  
+  
+    box-sizing: border-box;
+    overflow: hidden;  
+    align-items: center;
+    width: 100%;
+
+}
+.card-title{
+  color: #181d27;
+  font-weight: bold;
+  font-size: 18px;
+}
+form{
+  color: #181d27;
+  
+  font-size: 18px;
+
+  text-align: center;
+
+}
+#formCard{
+  height: 95%;
+}
+#meatInventoryTable{
+  color: #181d27;
+  
+  
+  
+}
+#foodPanels{
+  width: 420%;
+  max-height: 50%;
+  overflow-y: scroll;
+}
+
+img{
+  margin-left: auto;
+}
+#myCarousel{
+  width: 100%;
+  height: 100%;
+}
+
+.clock {
+
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    font-size: 60px;
+    font-family: 'Didact Gothic';
+    letter-spacing: 7px;
+   
+
+
+}
+#MyClockDate{
+  text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    font-size: 35px;
+    font-family: 'Didact Gothic';
+    letter-spacing: 7px;
+}
+#MyTemperature{
+  text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    font-size: 35px;
+    font-family: 'Didact Gothic';
+    letter-spacing: 7px;
+}
+#MyDinner{
+  text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    font-size: 35px;
+    font-family: 'Didact Gothic';
+    letter-spacing: 1px;
+}
+#MyDinnerLabel{
+  text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    font-size: 35px;
+    font-family: 'Apple Chancery, cursive';
+    letter-spacing: 1px;
+}
+canvas{
+  margin-right: auto;
+  margin-left: auto;
+  width:100% !important;
+  height:100% !important;
+
+}
+#getAvg{
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+ color: white;
+ font-family: 'Didact Gothic';
+ padding: 0;
+ text-align: center; 
+ color: rgba(188, 160, 188, 1);
+ border: 1px solid #f72585;
+ border-radius: 4px;
+
+
+
+}
+#avgHead{
+
+   color: rgba(188, 160, 188, 1);
+ font-family: 'Didact Gothic';
+ text-align: center;
+ font-size: 16px;
+ margin-bottom: -1%;
+}
+</style>
+
+
+
+<script>
+function showTime(){
+  var d = new Date();
+  var a = [{% for i in inventory %}{{i.cost}},{% endfor %}];
+  document.getElementById("MyClockDate").innerHTML = d.toDateString();
+  var num = eval(a.join('+'))/a.length;
+  
+  document.getElementById("getAvg").innerHTML = "<p style='font-size: 40px; display: inline-block; color: #69b578'>$</p>"+num.toFixed("2");
+  
+    var date = new Date();
+    var h = date.getHours(); // 0 - 23
+    var m = date.getMinutes(); // 0 - 59
+    var s = date.getSeconds(); // 0 - 59
+    var session = "AM";
+    
+    if(h == 0){
+        h = 12;
+    }
+    
+    if(h > 12){
+        h = h - 12;
+        session = "PM";
+    }
+    
+    h = (h < 10) ? "0" + h : h;
+    m = (m < 10) ? "0" + m : m;
+    s = (s < 10) ? "0" + s : s;
+    
+    var time = h + ":" + m + ":" + s + " " + session;
+    document.getElementById("MyClockDisplay").innerText = time;
+    document.getElementById("MyClockDisplay").textContent = time;
+    
+    setTimeout(showTime, 1000);
+    
+}
+
+showTime();
+</script>
+
+<body onload="showTime()">
+
+
+<div id="myCarousel" class="carousel slide">
+  <!-- Items -->
+  <div class="carousel-inner">
+      
+      <!-- Item 1 -->
+   <!-- <div class="item active">
+        
+     
+        <canvas id="payChart">Pay</canvas>
+        
+        
+        
+        <h2 id="getAvg"></h2>
+
+    
+    </div> -->
+
+
+    <div class="item active">
+        
+     
+        <center><img src="/media/fam.png" /></center>
+
+    
+    </div>
+      
+      <!-- Item 2 -->
+     <div class="item">
+        
+      <div class="container">
+        
+          <br><br><br><br>
+          <div id="MyClockDisplay" class="clock"></div>
+          <div id="MyClockDate"></div>
+
+          <div class="status" id="MyTemperature">{{temp}}</div>
+          <br>
+          <br>
+          <br>
+          <div class="status" id="MyDinnerLabel">Tonight's meal</div>
+
+          {% for d in dinner %}
+          <center><i class="status" id="MyDinner">{{d.meal|cut:'"'}}</i></center>
+          {% endfor %}
+
+     
+        
+      </div>
+    </div>
+    </div>
+
+
+</body>
+
+
+
+<script src="{% static 'js/Chart.js' %}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<script>
+
+</script>  
+<script>
+{% load tz %}
+{% localtime on %}
+
+new Chart(document.getElementById("payChart") ,{
+      type: 'line',
+      data: {
+        responsive: true,
+        labels: ['SUN', 'MON', 'TUE', 'WED', 'THURS', 'FRI', 'SAT'],
+        datasets: [{
+
+          label: 'Meals - 4/18/21',
+          fontColor: 'rgba(24, 29, 39, 1)',
+          backgroundColor: 'rgba(188, 160, 188, 1)',
+          borderColor: '#f72585',
+          borderWidth: 1,
+          pointBackgroundColor: '#f72585',
+          pointBorderWidth: 2,
+          pointBorderColor: '#f72585',
+          fill: true, 
+          data: [{% for i in inventory %}'{{i.cost}}',{% endfor %}],
+          
+          fillColor: 'rgba(37, 77, 50, 1)',
+          
+          
+          strokeColor: 'rgba(37, 77, 50, 1)',
+
+      }],
+    },
+    
+    options: {
+        legend: {
+            labels: {
+                fontFamily: "Didact Gothic", 
+                fontColor: 'white',
+
+            }
+        },
+
+        scales: {
+            yAxes: [{
+                ticks: {
+                    // Edit here for the yAxe
+                    fontFamily: "Didact Gothic",
+                    fontColor: 'white',
+                    fontSize: 18
+                    
+                  
+                },
+                gridLines:{
+                  color: "#83a0a0"
+                },
+            }],
+            xAxes: [{
+                ticks: {
+                    // Edit here for the yAxe
+                    fontFamily: "Didact Gothic",
+                    fontColor: 'white',
+                    fontSize: 20
+                    
+                },
+                gridLines:{
+                  color: "#83a0a0"
+                },
+            }]
+    }
+}
+});
+
+
+
+       
+//      }, {
+//                  
+//          label: 'Upload Mbit/s',
+//          backgroundColor: {{ uback|safe }},
+//          borderColor: {{ uborder|safe }},
+//          borderWidth: 1,
+//          pointBackgroundColor: {{ udot|safe }},
+//          fill: false, 
+//          data: {{ udata|safe }},
+//      }],
+//      options: {
+//        responsive: true,
+//      }
+//    },
+//};
+
+
+{% endlocaltime %}
+</script>
+
+<script>
+
+  $(function () {
+    $('#myCarousel').carousel({
+        interval:10000,
+        pause: "false"
+    });
+    $("#myCarousel").on('slide.bs.carousel', function () {
+        update_temp();
+    });
+    $('#playButton').click(function () {
+        $('#myCarousel').carousel('cycle');
+    });
+    $('#pauseButton').click(function () {
+        $('#myCarousel').carousel('pause');
+    });
+});
+  </script>
+<script>
+
+function update_temp() {
+    $.ajax({
+      method: "GET",
+      url: "/temp/",
+      data: {},
+      success: function(data) {
+        console.log(data); // check out how data is structured
+
+        // Update the coin amount
+        document.getElementById('MyTemperature').innerText = data[data.length - 1].temp + '°'
+      }
+    })
+  };
+
+
+  </script>

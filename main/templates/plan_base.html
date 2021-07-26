@@ -1,0 +1,379 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+		<link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+	<!-- Compiled and minified JavaScript -->
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+
+
+
+	<link href='{% static "css/fullcalendar.css" %}' rel='stylesheet' /> 
+	
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<script src='{% static "js/jquery-ui.min.js" %}'></script>
+
+	<script src='{% static "js/bootstrap.min.js" %}'></script>
+	
+	<script src="{% static 'js/moment.js' %}"></script>
+    <script src='{% static "js/fullcalendar.min.js" %}'></script>
+    <script src="https://fullcalendar.io/releases/core/4.1.0/main.min.js"></script>
+  	<script src="https://fullcalendar.io/releases/interaction/4.1.0/main.min.js"></script>
+  	<script src="https://fullcalendar.io/releases/daygrid/4.1.0/main.min.js"></script>
+  	<script src="https://fullcalendar.io/releases/timegrid/4.1.0/main.min.js"></script>
+
+  <title>Meal Plan</title>
+</head>
+<style>
+
+body{
+	background-color: #254d32;
+	
+	overflow-x: hidden;
+	font-family: 'Didact Gothic';
+}
+nav{
+	width: 100%;
+
+	font-family: 'Didact Gothic';
+	background-color: #181d27;
+	
+}
+a { 
+	color: inherit !important;
+	text-decoration: none !important;
+	}
+
+.card-body{
+	max-height: 1200px;
+	background-color: white;
+	
+}
+.card-panel{
+	background-color: #d0db97;
+
+}
+#recipeL{
+	width: 400px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+  #recipeList{
+    color: #181d27;
+    font-family: 'Didact Gothic';
+    font-size: 20px;
+    text-align: center;
+
+  }
+  .sidenav{
+    background-color: #d0db97;
+  }
+	#external-events {
+		margin-left: auto;
+		margin-right: auto;
+		width: 300px;
+		
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: center;
+	}
+		
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+	}
+		
+	#external-events .fc-event {
+		margin: 10px 0;
+		cursor: pointer;
+	}
+		
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
+		
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+	}
+	.fc-event-time, .fc-event-title {
+		padding: 0 1px;
+		white-space: nowrap;
+		}
+
+
+	.fc-title{
+       color: white;
+
+       overflow-wrap: break-word;
+       font-size: 16px;
+       white-space: normal;
+	}
+	.fc-event{
+		font-size: 16px;
+		display: inline-block;
+		overflow-x: hidden;
+
+	}
+html {
+  overflow: scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var Calendar = FullCalendar.Calendar;
+  var Draggable = FullCalendarInteraction.Draggable;
+
+  var containerEl = document.getElementById('external-events');
+  var calendarEl = document.getElementById('calendar');
+  var checkbox = document.getElementById('drop-remove');
+
+  // initialize the external events
+  // -----------------------------------------------------------------
+
+  new Draggable(containerEl, {
+    itemSelector: '.fc-event',
+    eventData: function(eventEl) {
+      return {
+        title: eventEl.innerText,
+        customAttribute: 'custom attribute'
+      };
+    }
+  });
+
+  // initialize the calendar
+  // -----------------------------------------------------------------
+
+  var calendar = new Calendar(calendarEl, {
+    plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    editable: true,
+    droppable: true,
+    resizeable: true,
+    events: [
+   		{% for plan in myplan %}
+   		{{plan|safe}},
+		{% endfor %}
+    ],
+  //  eventResize: function(eventResizeInfo){
+ //   	console.log(eventResizeInfo.view)
+//    },
+
+	eventReceive: function(info){
+		var title = JSON.stringify(info.event.title);
+		var start = moment(info.event.start).format("YYYY-MM-DD");
+		console.log(start);
+		var date = JSON.stringify(start);
+		
+		
+		
+		var token = "{{csrf_token}}";
+		$.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "/plan_view/",
+            type: "POST",
+            data: 
+            	{
+        		'meal': title,
+        		'day': date
+            	
+            	 },
+            
+            dataType: "json",
+            cache:false,
+            success: function(resp){
+              alert ("resp: "+resp.name);
+          }
+        });
+	},
+
+    eventClick: function(info) {
+     console.log(info.event.title); 
+     console.log(info.event.start);
+     console.log(info.event.end);
+     console.log(info.event.id);
+     console.log(info.event.customAttribute);
+    }
+  });
+
+  calendar.render();
+});
+//$(document).ready(function() {
+//	/* initialize the external events
+//	-----------------------------------------------------------------*/
+//
+//	$('#external-events .fc-event').each(function() {
+//
+//		// store data so the calendar knows to render an event upon drop
+//		$(this).data('event', {
+//			title: $.trim($(this).text()),
+//			stick: true 
+//		});
+//
+//		$(this).draggable({
+//			zIndex: 999,
+//			revert: true,      // will cause the event to go back to its
+//			revertDuration: 0  //  original position after the drag
+//		});
+//	});
+//		/* initialize the calendar
+//		-----------------------------------------------------------------*/
+//
+//	$('#calendar').fullCalendar({
+//	 	events: [
+//
+//			],
+//		header: {
+//			left: 'prev,next today',
+//			center: 'title',
+//			right: 'month,agendaWeek,agendaDay'
+//		},
+//      	unselectAuto: false,
+//		selectable: true,
+//		selectHelper: false,
+//		editable: true,
+//		droppable: true, // this allows things to be dropped onto the calendar
+//		eventDrop: function(info) {
+//			  if(!confirm("Are you sure about this change?")) {
+//			  info.revert();
+//			}
+//			  modifyEvent(info.event);
+//		  }
+//	});
+//});
+//	
+
+</script>
+
+<body>
+<nav class="navbar" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span> 
+    </button>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul id="nav-mobile" class="left hide-on-med-and-down">  
+
+      <li><a href="\">Home</a></li>
+      <li><a href="\food_base\">Edit/View Inventory</a></li>
+        <li><a href="\recipe_base\">Create Recipes</a></li>
+        <li><a href="#!" data-target="mobile-demo" class="tooltipped sidenav-trigger show-on-large" data-position="bottom" data-tooltip="stores" href="/stores/">My Recipes</a>
+        </li>
+        <li><a href="\plan_base\">Meal Planner</a></li>
+      
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+<ul id="mobile-demo" class="sidenav">
+  <li>
+    <div class="background">
+
+      
+      <img id="rheader" src="/media/rheader.png" width="300" height="95">
+      <br><br>
+      {% for r in myrecipe %}
+      {% for a in r %}
+      <center><a href="{% url 'my_recipe' a.pk %}" id="recipeList">{{a.name}}</a></center>
+     
+      {% endfor %}
+      {% endfor %}
+    <br>
+    <img id="rfooter" src="/media/rfooter.png" width="300" height="95">
+    </div>
+      
+  </li>
+
+</ul>
+
+<div class="row">
+	<div class="col-sm-3">
+	<div class="card-panel">
+	  
+
+	    <div id="external-events">
+			<h4>Recipes</h4>
+			{% for a in recipe %}
+			<div class='fc-event'>{{a.name}}</div>
+			<br>
+			{% endfor %}
+			<p>
+				
+				
+			</p>
+		</div>
+
+	</div>
+</div>
+	<div class="col-sm-9">
+	<div class="card-panel">
+	  
+	  <div class="card-body">
+
+	  	<div id='calendar'></div>
+		  </div> -->
+		</div>
+	
+
+	  </div>
+	</div>
+	</div>
+
+
+</div>
+
+
+
+
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+<script>
+$(document).ready(function() {
+
+  $(".button-collapse").on("click tap", function() {
+    toggleSidebar();
+  });
+});
+
+function toggleSidebar() {
+  $(".sidebar-item").toggleClass("active");
+} 
+
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+
+</script>
+
+</html>

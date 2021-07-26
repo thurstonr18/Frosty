@@ -1,0 +1,338 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+	<!-- Compiled and minified JavaScript -->
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+
+	<link href="{% static 'css/prism.css' %}" rel="stylesheet">
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  
+{% for r in thisrecipe %}
+  <title>{{r.name}}</title>
+{% endfor %}
+</head>
+<style>
+body{
+	background-color: #254d32;
+	
+	overflow: hidden;
+	font-family: 'Didact Gothic';
+}
+
+.card-panel{
+	background-color: #d0db97;
+	min-height: 800px;
+
+}
+.card-title{
+	color: #181d27;
+	font-weight: bold;
+	font-size: 18px;
+}
+form{
+	color: #181d27;
+	
+
+
+	text-align: center;
+
+}
+nav{
+  width: 100%;
+
+  font-family: 'Didact Gothic';
+  background-color: #181d27;
+  
+}
+#formFields{
+	
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #181d27;
+	 width: 80%;
+	   color: #181d27;
+	    margin-left: auto;
+	     margin-right: auto;
+	      background-color:#69b578;
+	       border: 4px dotted black;
+	       	font-family: 'Didact Gothic';
+
+}
+#descriptionLabel{
+	color: #181d27;
+	font-family: 'Didact Gothic';
+	background-color:#69b578;
+   border: 4px dotted black;
+
+}
+.formLabels{
+	color: #181d27;
+	font-family: 'Didact Gothic';
+
+
+
+}
+
+#foodInventoryTable{
+	color: #181d27; 
+	width: 500px;
+	table-layout: fixed;
+}
+#foodPicker{
+	display: block;
+}
+#showFoods{
+	
+	background-color: #69b578;
+	color: #181d27;
+}
+.checkBoxOff input[type="checkbox"]{
+    display:none;
+}
+th{
+	padding-right: 25%;
+	font-size: 10px;
+}
+.hide {
+  display: none;
+}
+
+.image_off, #home:hover .image_on{
+   display:none
+}
+.image_on, #home:hover .image_off{
+   display:block
+}
+#formCard{
+	width: 100%;
+  min-height: 720px;
+
+}
+.food-panel{
+	margin-left: 3%;
+}
+a { 
+  color: inherit !important;
+  text-decoration: none !important;
+  }
+  #add-another{
+    background-color: transparent;
+    float: right;
+    margin-right: -10px;
+    margin-top: -3%;
+    color: white;
+    border: none;
+    font-size: 45px;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    -webkit-text-stroke-color: #181d27;
+    color: #181d27;
+    font-family: 'Didact Gothic';
+
+
+  }
+  #extraField{
+
+        background-color:#69b578;
+         border: 4px dotted black;
+          font-family: 'Didact Gothic';
+
+
+          font-size: 24px; 
+          -webkit-text-stroke-width: .5px; 
+          text-align: center; 
+          -webkit-text-stroke-color: #181d27; 
+          width: 80%; color: #181d27; 
+          margin-left: 2%; 
+          margin-right: auto; 
+          background-color:#69b578;
+  }
+  #foodLabels{
+    display: inline-block;
+  }
+  #menu{
+    text-align: center;
+  }
+  i{
+    color: white; 
+  }
+
+  #recipeList{
+    color: #181d27;
+    font-family: 'Didact Gothic';
+    font-size: 20px;
+    text-align: center;
+
+  }
+  .sidenav{
+    background-color: #d0db97;
+  }
+html {
+  overflow:   scroll;
+}
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+#ingList{
+	float: left;
+	min-height: 620px;
+	max-width: 150px;
+	word-wrap: break-word;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #181d27;
+	font-size: 18px;
+   color: #181d27;
+   padding-top: 10%;
+      background-color:#69b578;
+       border: 4px dotted black;
+       	font-family: 'Didact Gothic';
+       	display: inline-block;
+}
+#descriptionBox{
+	width: 70%;
+	min-height: 620px;
+	padding-top: 10%;
+	padding-left: 2%;
+	float: right;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #181d27;
+	font-size: 18px;
+   color: #181d27;
+
+  background-color:#69b578;
+   border: 4px dotted black;
+   	font-family: 'Didact Gothic';
+}
+
+</style>
+
+
+
+<body>
+<nav class="navbar" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span> 
+    </button>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul id="nav-mobile" class="left hide-on-med-and-down">  
+
+      <li><a href="\">Home</a></li>
+      <li><a href="\food_base\">Edit/View Inventory</a></li>
+        <li><a href="\recipe_base\">Create Recipes</a></li>
+        <li><a href="#!" data-target="mobile-demo" class="tooltipped sidenav-trigger show-on-large" data-position="bottom" data-tooltip="stores" href="/stores/">My Recipes</a>
+        </li>
+        <li><a href="\plan_base\">Meal Planner</a></li>
+      
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+<ul id="mobile-demo" class="sidenav">
+  <li>
+    <div class="background">
+
+      
+      <img id="rheader" src="/media/rheader.png" width="300" height="95">
+      <br><br>
+      {% for r in myrecipe %}
+      {% for a in r %}
+      <center><a href="{% url 'my_recipe' a.pk %}" id="recipeList">{{a.name}}</a></center>
+     
+      {% endfor %}
+      {% endfor %}
+    <br>
+    <img id="rfooter" src="/media/rfooter.png" width="300" height="95">
+    </div>
+      
+  </li>
+
+</ul>
+
+
+
+
+
+
+<div class="row">
+	<div class="col-sm-4">
+		<div class="card-panel">
+	  
+		  	<div class="card-body" id="recipeL">
+
+		    	{% for a in thisrecipe %}
+				<h4 style="text-align: center;">{{a.name}}</h4>
+				{% endfor %}
+				<br>
+				<div class="row">
+					<ul id="ingList" class="column">
+						{% for i in ingredients %}
+						<li>{{i}}</li>
+						<br>
+						{% endfor %}
+					</ul>
+					{% for a in thisrecipe %}
+					<p id="descriptionBox" class="column">{{a.description|striptags|safe}}</p>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-8">
+	<div class="card-panel">
+	  
+	  <div class="card-body">
+
+	
+
+	  </div>
+	</div>
+	</div>
+
+
+</div>
+
+
+
+
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+$(document).ready(function() {
+
+  $(".button-collapse").on("click tap", function() {
+    toggleSidebar();
+  });
+});
+
+function toggleSidebar() {
+  $(".sidebar-item").toggleClass("active");
+} 
+
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+
+</script>
+</html>

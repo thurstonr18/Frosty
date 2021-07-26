@@ -1,0 +1,340 @@
+{% load static %}
+{% load materializecss %}
+<!DOCTYPE html>
+<html>
+<head>
+
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+	<!-- Compiled and minified JavaScript -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+	<link href="{% static 'css/prism.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	{{form.media}}
+<script>
+tinyMCE.init({
+    mode: "textareas",
+    
+    plugins: "spellchecker,directionality,paste,searchreplace",
+    language: "{{ language }}",
+    directionality: "{{ directionality }}",
+    spellchecker_languages : "{{ spellchecker_languages }}",
+    spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
+});
+</script>
+
+	<title>Food Base</title>
+	<script>
+function onHover()
+{	
+	$("#menuImg").attr('src', '/media/saveanime.gif');
+    $("#menuImg").attr('width', '64');
+    $("#menuImg").attr('height', '64');
+    
+
+}
+
+function offHover()
+{
+	$("#menuImg").attr('src', '/media/save.png');
+}
+
+</script>
+</head>
+
+<style>
+
+body{
+	background-color: #254d32;
+	
+	overflow-x: hidden;
+	font-family: 'Didact Gothic';
+}
+
+.card-panel{
+	background-color: #d0db97;
+
+}
+.card-title{
+	color: #181d27;
+	font-weight: bold;
+	font-size: 18px;
+}
+form{
+	color: #181d27;
+	
+
+
+	text-align: center;
+
+}
+nav{
+  width: 100%;
+
+  font-family: 'Didact Gothic';
+  background-color: #181d27;
+  
+}
+#formFields{
+	
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: #181d27;
+	 width: 80%;
+	   color: #181d27;
+	    margin-left: auto;
+	     margin-right: auto;
+	      background-color:#69b578;
+	       border: 4px dotted black;
+	       	font-family: 'Didact Gothic';
+
+}
+#descriptionLabel{
+	color: #181d27;
+	font-family: 'Didact Gothic';
+	background-color:#69b578;
+   border: 4px dotted black;
+
+}
+.formLabels{
+	color: #181d27;
+	font-family: 'Didact Gothic';
+
+
+
+}
+
+#foodInventoryTable{
+	color: #181d27; 
+	width: 500px;
+	table-layout: fixed;
+}
+#foodPicker{
+	display: block;
+}
+#showFoods{
+	
+	background-color: #69b578;
+	color: #181d27;
+}
+.checkBoxOff input[type="checkbox"]{
+    display:none;
+}
+th{
+	padding-right: 25%;
+	font-size: 10px;
+}
+.hide {
+  display: none;
+}
+
+.image_off, #home:hover .image_on{
+   display:none
+}
+.image_on, #home:hover .image_off{
+   display:block
+}
+#formCard{
+	width: 100%;
+
+}
+.food-panel{
+	margin-left: 3%;
+}
+a { 
+  color: inherit !important;
+  text-decoration: none !important;
+  }
+</style>
+
+<body>
+<nav>
+    <div class="nav-wrapper">
+      
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="\">Home</a></li>
+        <li><a href="\recipe_base\">Create Recipes</a></li>
+        <li><a href="\food_base\">Edit/View Inventory</a></li>
+        <li><a href="\plan_base\">Meal Planner</a></li>
+      </ul>
+    </div>
+  </nav>
+<div id="foodForm">
+	<form method="POST" id="my_form">
+	{% csrf_token %}
+<div class="row">
+    <div class="col-md-3">
+      <div class="card-panel" id="formCard">
+        <div class="card-content white-text">
+
+          
+          	
+						
+		<!--  MAIN FORM HANDLING -->				
+							
+			<br>
+			<p class="formLabels"><img src="/media/parchment.png" width="60" height="60"></p>
+				<br>
+			<p id="formFields">{{form.name}}</p>
+			<br><br>
+			<img src="/media/pencil.png" width="80" height="80">
+			<div id="descriptionLabel">
+			{{form.description}}
+			</div>
+			<br>
+				
+					
+					<div id="menu" >  
+						<a href="#" onclick="document.getElementById('my_form').submit();">
+							<img id="menuImg" src="/media/save.png" alt="logo" onmouseover="onHover();" 
+			      				onmouseout="offHover();"/>
+						
+						</a>
+					</div>	
+						
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-panel food-panel">
+        <div class="card-content white-text">
+   
+          <table id="foodInventoryTable">
+          	<thead>
+          		<th><img width="80" height="80" src="/media/salami.png" style="margin-bottom: 14%;" /></th>
+          		
+          		<th><img src="/media/chaching.png" /></th>
+      
+          	</thead>
+          	<tbody>
+          		{% for f in meat %}
+          		{% for value, text in form.food.field.choices %}
+      			{% if text == f.name %}
+          		<tr>
+          			<td>
+          				<label class="formLabels" id="food">
+          					<input type="checkbox" id="{{f.id}}" value="{{value}}">
+							<span style="font-size: 18px">{{text}}</span>
+						</label>
+						
+					</td>
+
+
+          			
+      			{% endif %}
+      			{% endfor %}
+					<br>
+          			
+          			
+          			<td style="padding-left: 10%;">{{f.cost}}</td>
+          		
+      			</tr>
+      			
+      			{% endfor %}
+          	</tbody>
+          </table>
+        </div>      
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-panel food-panel">
+        <div class="card-content white-text">
+          
+          <table id="foodInventoryTable">
+          	<thead>
+          		<th><img src="/media/lettuce.png" /></th>
+          		
+          		<th><img src="/media/chaching.png" /></th>
+
+          	</thead>
+          	<tbody>
+          		{% for f in veggie %}
+          		{% for value, text in form.food.field.choices %}
+      			{% if text == f.name %}
+          		<tr>
+          			<td>
+          				<label class="formLabels" id="food">
+          					<input type="checkbox" id="{{f.id}}" value="{{value}}">
+							<span style="font-size: 18px">{{text}}</span>
+						</label>
+						
+					</td>
+
+
+          			
+      			{% endif %}
+      			{% endfor %}
+					<br>
+          			
+          			
+          			<td style="padding-left: 10%;">{{f.cost}}</td>
+          		
+      			</tr>
+      			
+      			{% endfor %}
+          	</tbody>
+          </table>
+        </div>      
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card-panel food-panel">
+        <div class="card-content white-text">
+          
+          <table id="foodInventoryTable">
+          	<thead>
+          		<th><img src="/media/salt.png" /></th>
+          		
+          		<th><img src="/media/chaching.png" /></th>
+
+          	</thead>
+          	<tbody>
+          		{% for f in spice %}
+          		{% for value, text in form.food.field.choices %}
+      			{% if text == f.name %}
+          		<tr>
+          			<td>
+          				<label class="formLabels" id="food">
+          					<input type="checkbox" id="{{f.id}}" value="{{value}}">
+							<span style="font-size: 18px">{{text}}</span>
+						</label>
+						
+					</td>
+
+
+          			
+      			{% endif %}
+      			{% endfor %}
+					<br>
+          			
+          			
+          			<td style="padding-left: 10%;">{{f.cost}}</td>
+          		
+      			</tr>
+      			
+      			{% endfor %}
+          	</tbody>
+          </table>
+        </div>      
+      </div>
+    </div>
+
+  </div>
+  
+		
+
+
+	</form>
+</div>
+</body>
+<script src="{% static 'tinymce/js/prism.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+</html>

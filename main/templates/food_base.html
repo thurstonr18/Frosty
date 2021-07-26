@@ -1,0 +1,263 @@
+{% load static %}
+{% load materializecss %}
+<!DOCTYPE html>
+<html>
+<head>
+
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+	<!-- Compiled and minified JavaScript -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+	<link href="{% static 'css/prism.css' %}" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+
+	<title>Food Base</title>
+</head>
+
+<style>
+
+body{
+	background-color: #254d32;
+	width: 100%;
+	overflow-x: hidden;
+	font-family: 'Didact Gothic';
+}	
+nav{
+	width: 100%;
+
+	font-family: 'Didact Gothic';
+	background-color: #181d27;
+	
+}
+.card-panel{
+	border-radius:3px;
+	background-color: #d0db97;
+
+    box-sizing: border-box;
+    align-items: center;
+    width: 100%;
+
+}
+.card-title{
+	color: #181d27;
+	font-weight: bold;
+	font-size: 18px;
+}
+form{
+	color: #181d27;
+	
+	font-size: 18px;
+
+	text-align: center;
+
+}
+#formCard{
+	height: 95%;
+}
+.inv{
+	color: #181d27;
+	table-layout: fixed;
+	width: 1200px;	
+}
+.foodPanels{
+
+	width: 420%;
+	max-height: 270px;
+	overflow-y: scroll;
+}
+
+img{
+	margin-left: auto;
+}
+a { 
+	color: inherit !important;
+	text-decoration: none !important;
+	}
+</style>
+
+<body>
+<nav>
+    <div class="nav-wrapper">
+      
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="\">Home</a></li>
+        <li><a href="\recipe_base\">Create Recipes</a></li>
+        <li><a href="\food_base\">Edit/View Inventory</a></li>
+        <li><a href="\plan_base\">Meal Planner</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="row">
+    <div class="col-md-3">
+      <div class="card-panel" id="formCard">
+        <div class="card-content white-text">
+
+          <div id="foodForm">
+					<form method="POST">
+						{% csrf_token %}
+
+						{{form.name.label}}
+						<br>
+						{{form.name}}
+						<br>
+						{{form.ftype.label}}
+						<br>
+						{{form.ftype}}
+						<br>
+						{{form.cost.label}}
+						<br>
+						{{form.cost}}
+						<br>
+						{{form.qty.label}}
+						<br>
+						{{form.qty}}
+						<br>
+						{{form.description.label}}
+						<br><br>
+						{{form.description}}
+						<br><br>
+						<button class="submit">Submit</button>
+					</form>
+				</div>
+        </div>
+      </div>
+    </div>
+   
+
+  <ul>
+  	<li>
+    <div class="col-md-9">
+    <div class="choice unset mx-2s" id="mmeatChoice">
+
+      <div class="card-panel foodPanels">
+        <!-- Title -->
+        <h4 class="card-title"><img src="/media/salami.png" /></h4>
+        <!-- Text -->
+        <table id="meatInventoryTable" class="inv">
+          	<thead>
+          		<th>Name</th>
+          		<th>Type</th>
+          		<th>Cost</th>
+          		<th>QTY</th>
+          		<th>Description</th>
+          
+          	</thead>
+          	<tbody>
+          		{% for f in food %}
+          		{% if f.ftype == '1' %}
+          		<tr>
+          			<td>{{f.name}}</td>
+          			<td>{{f.ftype}}</td>
+          			<td>{{f.cost}}</td>
+          			<td>{{f.qty}}</td>
+          			<td>{{f.description}}</td>
+          			
+      			</tr>
+      			{% endif %}
+      			{% endfor %}
+
+          	</tbody>
+          </table>
+        <!-- Button -->
+        
+	      </div>
+
+	    </div>
+	</div>
+</li>
+
+<li>
+	<div class="col-md-9">
+	    <div class="choice unset mx-2s">
+
+	      <div class="card-panel foodPanels">
+	        <!-- Title -->
+	        <h4 class="card-title"><img src="/media/lettuce.png" /></h4>
+	        <!-- Text -->
+	        <table id="veggieInventoryTable" class="inv">
+	          	<thead>
+	          		<th>Name</th>
+	          		<th>Type</th>
+	          		<th>Cost</th>
+	          		<th>QTY</th>
+	          		<th>Description</th>
+	     
+	          	</thead>
+	          	<tbody>
+	          		{% for f in food %}
+	          		{% if f.ftype == '2' %}
+	          		<tr>
+	          			<td>{{f.name}}</td>
+	          			<td>{{f.ftype}}</td>
+	          			<td>{{f.cost}}</td>
+	          			<td>{{f.qty}}</td>
+	          			<td>{{f.description}}</td>
+	          			
+	      			</tr>
+	      			{% endif %}
+	      			{% endfor %}
+	          	</tbody>
+	          </table>     
+	      </div>
+	    </div>
+	</div>
+</li>
+<li>
+	<div class="col-md-9">
+	    <div class="choice unset mx-2s">
+
+	      <div class="card-panel foodPanels">
+	        <!-- Title -->
+	        <h4 class="card-title"><img src="/media/salt.png" /></h4>
+	        <!-- Text -->
+	        <table id="otherInventoryTable" class="inv">
+	          	<thead>
+	          		<th>Name</th>
+	          		<th>Type</th>
+	          		<th>Cost</th>
+	          		<th>QTY</th>
+	          		<th>Description</th>
+	      
+	          	</thead>
+	          	<tbody>
+	          		{% for f in food %}
+	          		{% if f.ftype == '3' %}
+	          		<tr>
+	          			<td>{{f.name}}</td>
+	          			<td>{{f.ftype}}</td>
+	          			<td>{{f.cost}}</td>
+	          			<td>{{f.qty}}</td>
+	          			<td>{{f.description}}</td>
+	          
+	      			</tr>
+	      			{% endif %}
+	      			{% endfor %}
+	          	</tbody>
+	          </table>     
+	      </div>
+	    </div>
+	</div>
+</li>
+</ul>
+
+</div>
+
+
+
+</body>
+<script src="{% static 'tinymce/js/prism.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+
+</html>
